@@ -14,13 +14,13 @@ class FragmentD : Fragment(R.layout.fragment_d) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val bind = FragmentDBinding.inflate(layoutInflater)
+        val binding = FragmentDBinding.inflate(layoutInflater)
 
-        bind.fragmentDBackButton.setOnClickListener {
+        binding.fragmentDBackButton.setOnClickListener {
             parentFragmentManager.popBackStack()
             parentFragmentManager.popBackStack()
         }
 
-        return bind.root
+        return binding.root
     }
 }

@@ -22,20 +22,20 @@ class FragmentA : Fragment(R.layout.fragment_a) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
+        requireActivity().onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, onBackPressedCallback)
 
-        val bind = FragmentABinding.inflate(layoutInflater)
-        val fragmentB = FragmentB()
+        val binding = FragmentABinding.inflate(layoutInflater)
 
-        bind.fragmentANextButton.setOnClickListener {
+        binding.fragmentANextButton.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
                 setReorderingAllowed(true)
-                replace(R.id.fragment, fragmentB, "fragmentB")
+                replace(R.id.fragment, FragmentB(), "fragmentB")
                 addToBackStack("fragments_first_part")
                 commit()
             }
         }
 
-        return bind.root
+        return binding.root
     }
 }

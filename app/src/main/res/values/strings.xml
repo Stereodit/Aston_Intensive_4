@@ -22,8 +22,10 @@
     <string name="user_surname_holder">Ivanov</string>
     <string name="user_name_holder">Ivan</string>
     <string name="user_phone_holder">+79113356722</string>
+
     <string name="user_edit_apply_button">APPLY</string>
     <string name="user_edit_button_cancel">Cancel</string>
     <string name="edit_user_title">Edit user</string>
 
+    <string name="receive_user_item_bundle_error">Bundle is corrupted.</string>
 </resources>

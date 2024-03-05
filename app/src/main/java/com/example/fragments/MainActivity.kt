@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if(savedInstanceState != null)
+        if (savedInstanceState != null)
             appState = AppState.entries[savedInstanceState.getInt("appState")]
 
         refreshScreen(appState)
@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
                 binding.firstPartButton.isVisible = true
                 binding.secondPartButton.isVisible = true
             }
+
             AppState.FirstPart -> {
                 supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 supportActionBar?.title = "Part 1"
@@ -72,6 +73,7 @@ class MainActivity : AppCompatActivity() {
                 binding.firstPartButton.isVisible = false
                 binding.secondPartButton.isVisible = false
             }
+
             AppState.SecondPart -> {
                 supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 supportActionBar?.title = "Part 2"
@@ -84,7 +86,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == android.R.id.home) {
+        if (item.itemId == android.R.id.home) {
             while (supportFragmentManager.backStackEntryCount != 0)
                 supportFragmentManager.popBackStackImmediate()
 

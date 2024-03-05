@@ -10,47 +10,47 @@ import com.example.fragments.databinding.FragmentCBinding
 
 class FragmentC : Fragment(R.layout.fragment_c) {
 
-    private var bind: FragmentCBinding? = null
+    private var binding: FragmentCBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        bind = FragmentCBinding.inflate(layoutInflater)
-        val fragmentD = FragmentD()
+        binding = FragmentCBinding.inflate(layoutInflater)
 
-        parentFragmentManager.setFragmentResultListener("partOneRequestKey", this) { _, bundle ->
-            bind!!.fragmentCIncomingText.text = bundle.getString("bundleKeyFromBToC") ?: "Sending error."
+        parentFragmentManager.setFragmentResultListener(FragmentB.requestKey, this) { _, bundle ->
+            binding!!.fragmentCIncomingText.text =
+                bundle.getString(FragmentB.messageKey) ?: "Sending error."
         }
 
-        bind!!.fragmentCNextButton.setOnClickListener {
+        binding!!.fragmentCNextButton.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
                 setReorderingAllowed(true)
-                replace(R.id.fragment, fragmentD, "fragmentD")
+                replace(R.id.fragment, FragmentD(), "fragmentD")
                 addToBackStack("fragments_first_part")
                 commit()
             }
         }
 
-        bind!!.fragmentCPrevButton.setOnClickListener {
+        binding!!.fragmentCPrevButton.setOnClickListener {
             parentFragmentManager.popBackStack()
             parentFragmentManager.popBackStack()
         }
 
-        return bind!!.root
+        return binding!!.root
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        outState.putString("incomingText", bind?.fragmentCIncomingText?.text.toString())
+        outState.putString("incomingText", binding?.fragmentCIncomingText?.text.toString())
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
 
-        bind?.fragmentCIncomingText?.text =
+        binding?.fragmentCIncomingText?.text =
             savedInstanceState?.getString("incomingText") ?: getString(R.string.fragment_c_incoming_text)
     }
 }

@@ -9,6 +9,9 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.example.fragments.R
 import com.example.fragments.databinding.FragmentUserEditBinding
+import com.example.fragments.second_part.UserListFragment.Companion.bundleKey
+import com.example.fragments.second_part.UserListFragment.Companion.fromListRequestKey
+import com.example.fragments.second_part.UserListFragment.Companion.toListRequestKey
 import com.example.fragments.second_part.recycler.UserItem
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -16,12 +19,6 @@ import kotlinx.serialization.json.Json
 class UserEditFragment : Fragment(R.layout.fragment_user_edit) {
 
     private lateinit var binding: FragmentUserEditBinding
-
-    private val requestKey = "userDT"
-    private val bundleKey = "userItem"
-
-    private val requestKey2 = "userDT2"
-    private val bundleKey2 = "userItem2"
 
     private var userItem: UserItem? = null
 
@@ -32,15 +29,16 @@ class UserEditFragment : Fragment(R.layout.fragment_user_edit) {
     ): View {
         binding = FragmentUserEditBinding.inflate(layoutInflater)
 
-        parentFragmentManager.setFragmentResultListener(requestKey, this) { _, bundle ->
+        parentFragmentManager.setFragmentResultListener(fromListRequestKey, this) { _, bundle ->
             userItem = bundle.getString(bundleKey)?.let { Json.decodeFromString(it) }
+
             if (userItem != null) {
                 binding.userEditSurname.hint = userItem!!.userSurname
                 binding.userEditName.hint = userItem!!.userName
                 binding.userEditPhone.hint = userItem!!.userPhone
-                binding.userImage.setImageResource(userItem!!.imageRes)
-            } else Toast.makeText(binding.root.context, "Bundle is corrupted.", Toast.LENGTH_SHORT)
-                .show()
+                binding.userEditImage.setImageResource(userItem!!.imageRes)
+            } else Toast.makeText(binding.root.context,
+                getString(R.string.receive_user_item_bundle_error), Toast.LENGTH_SHORT).show()
         }
 
         binding.userEditApplyButton.setOnClickListener {
@@ -48,28 +46,27 @@ class UserEditFragment : Fragment(R.layout.fragment_user_edit) {
                 val newUserItem = UserItem(
                     userId = userItem!!.userId,
                     userName =
-                    if (binding.userEditName.text.toString() != "")
-                        binding.userEditName.text.toString()
-                    else userItem!!.userName,
+                        if (binding.userEditName.text.toString() != "")
+                            binding.userEditName.text.toString()
+                        else userItem!!.userName,
                     userSurname =
-                    if (binding.userEditSurname.text.toString() != "")
-                        binding.userEditSurname.text.toString()
-                    else userItem!!.userSurname,
+                        if (binding.userEditSurname.text.toString() != "")
+                            binding.userEditSurname.text.toString()
+                        else userItem!!.userSurname,
                     userPhone =
-                    if (binding.userEditPhone.text.toString() != "")
-                        binding.userEditPhone.text.toString()
-                    else userItem!!.userPhone,
+                        if (binding.userEditPhone.text.toString() != "")
+                            binding.userEditPhone.text.toString()
+                        else userItem!!.userPhone,
                     imageRes = userItem!!.imageRes
                 )
+
                 parentFragmentManager.setFragmentResult(
-                    requestKey2,
-                    bundleOf(bundleKey2 to Json.encodeToString(newUserItem))
+                    toListRequestKey,
+                    bundleOf(bundleKey to Json.encodeToString(newUserItem))
                 )
-            } else Toast.makeText(
-                binding.root.context,
-                "This user is corrupted.",
-                Toast.LENGTH_SHORT
-            ).show()
+            } else Toast.makeText(binding.root.context,
+                getString(R.string.receive_user_item_bundle_error), Toast.LENGTH_SHORT).show()
+
             parentFragmentManager.popBackStack()
         }
 
@@ -102,7 +99,7 @@ class UserEditFragment : Fragment(R.layout.fragment_user_edit) {
             binding.userEditSurname.hint = userItem!!.userSurname
             binding.userEditName.hint = userItem!!.userName
             binding.userEditPhone.hint = userItem!!.userPhone
-            binding.userImage.setImageResource(userItem!!.imageRes)
+            binding.userEditImage.setImageResource(userItem!!.imageRes)
         }
     }
 }

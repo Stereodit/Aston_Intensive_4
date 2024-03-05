@@ -10,34 +10,39 @@ import com.example.fragments.R
 import com.example.fragments.databinding.FragmentBBinding
 
 class FragmentB : Fragment(R.layout.fragment_b) {
+
+    companion object {
+        const val requestKey = "fromBtoC"
+        const val messageKey = "text"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val bind = FragmentBBinding.inflate(layoutInflater)
-        val fragmentC = FragmentC()
+        val binding = FragmentBBinding.inflate(layoutInflater)
 
-        bind.fragmentBNextButton.setOnClickListener {
-            val incomingTextFromB = "Hello, fragment C!"
+        binding.fragmentBNextButton.setOnClickListener {
+            val textToFragmentC = "Hello, fragment C!"
             parentFragmentManager.setFragmentResult(
-                "partOneRequestKey",
-                bundleOf("bundleKeyFromBToC" to incomingTextFromB)
+                requestKey,
+                bundleOf(messageKey to textToFragmentC)
             )
 
             parentFragmentManager.beginTransaction().apply {
                 setReorderingAllowed(true)
-                replace(R.id.fragment, fragmentC, "fragmentC")
+                replace(R.id.fragment, FragmentC(), "fragmentC")
                 addToBackStack("fragments_first_part")
                 commit()
 
             }
         }
 
-        bind.fragmentBPrevButton.setOnClickListener {
+        binding.fragmentBPrevButton.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
 
-        return bind.root
+        return binding.root
     }
 }
