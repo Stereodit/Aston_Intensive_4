@@ -47,9 +47,6 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
-    // Serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
-
     // Fragment Saved State
     implementation("androidx.fragment:fragment-ktx:1.6.2")
 

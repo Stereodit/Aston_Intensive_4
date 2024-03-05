@@ -19,9 +19,9 @@ class FragmentC : Fragment(R.layout.fragment_c) {
     ): View {
         binding = FragmentCBinding.inflate(layoutInflater)
 
-        parentFragmentManager.setFragmentResultListener(FragmentB.requestKey, this) { _, bundle ->
+        parentFragmentManager.setFragmentResultListener(BUNDLE_REQUEST_KEY, this) { _, bundle ->
             binding!!.fragmentCIncomingText.text =
-                bundle.getString(FragmentB.messageKey) ?: "Sending error."
+                bundle.getString(BUNDLE_MESSAGE_KEY) ?: "Sending error."
         }
 
         binding!!.fragmentCNextButton.setOnClickListener {
@@ -44,13 +44,13 @@ class FragmentC : Fragment(R.layout.fragment_c) {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        outState.putString("incomingText", binding?.fragmentCIncomingText?.text.toString())
+        outState.putString("message", binding?.fragmentCIncomingText?.text.toString())
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
 
         binding?.fragmentCIncomingText?.text =
-            savedInstanceState?.getString("incomingText") ?: getString(R.string.fragment_c_incoming_text)
+            savedInstanceState?.getString("message") ?: getString(R.string.fragment_c_incoming_text)
     }
 }

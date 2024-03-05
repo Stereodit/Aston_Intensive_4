@@ -1,9 +1,8 @@
 package com.example.fragments.second_part.recycler
 
 import androidx.annotation.DrawableRes
-import kotlinx.serialization.Serializable
+import java.io.Serializable
 
-@Serializable
 data class UserItem(
     val userId: Int,
     val userName: String,
@@ -11,4 +10,4 @@ data class UserItem(
     val userPhone: String,
     @DrawableRes
     val imageRes: Int
-)
+) : Serializable

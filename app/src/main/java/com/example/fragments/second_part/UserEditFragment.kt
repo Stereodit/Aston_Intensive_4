@@ -9,12 +9,9 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.example.fragments.R
 import com.example.fragments.databinding.FragmentUserEditBinding
-import com.example.fragments.second_part.UserListFragment.Companion.bundleKey
-import com.example.fragments.second_part.UserListFragment.Companion.fromListRequestKey
-import com.example.fragments.second_part.UserListFragment.Companion.toListRequestKey
 import com.example.fragments.second_part.recycler.UserItem
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+
+const val BUNDLE_TO_LIST_REQUEST_KEY = "TO_LIST"
 
 class UserEditFragment : Fragment(R.layout.fragment_user_edit) {
 
@@ -29,8 +26,8 @@ class UserEditFragment : Fragment(R.layout.fragment_user_edit) {
     ): View {
         binding = FragmentUserEditBinding.inflate(layoutInflater)
 
-        parentFragmentManager.setFragmentResultListener(fromListRequestKey, this) { _, bundle ->
-            userItem = bundle.getString(bundleKey)?.let { Json.decodeFromString(it) }
+        parentFragmentManager.setFragmentResultListener(BUNDLE_FROM_LIST_REQUEST_KEY, this) { _, bundle ->
+            userItem = bundle.serializable(BUNDLE_USER_ITEM_KEY)
 
             if (userItem != null) {
                 binding.userEditSurname.hint = userItem!!.userSurname
@@ -61,8 +58,8 @@ class UserEditFragment : Fragment(R.layout.fragment_user_edit) {
                 )
 
                 parentFragmentManager.setFragmentResult(
-                    toListRequestKey,
-                    bundleOf(bundleKey to Json.encodeToString(newUserItem))
+                    BUNDLE_TO_LIST_REQUEST_KEY,
+                    bundleOf(BUNDLE_USER_ITEM_KEY to newUserItem)
                 )
             } else Toast.makeText(binding.root.context,
                 getString(R.string.receive_user_item_bundle_error), Toast.LENGTH_SHORT).show()
@@ -84,7 +81,7 @@ class UserEditFragment : Fragment(R.layout.fragment_user_edit) {
         outState.putString("inputUserName", binding.userEditName.text.toString())
         outState.putString("inputUserPhone", binding.userEditPhone.text.toString())
 
-        outState.putString("userItem", Json.encodeToString(userItem))
+        outState.putSerializable("userItem", userItem)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -94,7 +91,7 @@ class UserEditFragment : Fragment(R.layout.fragment_user_edit) {
         binding.userEditName.setText(savedInstanceState?.getString("inputUserName") ?: "")
         binding.userEditPhone.setText(savedInstanceState?.getString("inputUserPhone") ?: "")
 
-        userItem = savedInstanceState?.getString("userItem")?.let { Json.decodeFromString(it) }
+        userItem = savedInstanceState?.serializable("userItem")
         if (userItem != null) {
             binding.userEditSurname.hint = userItem!!.userSurname
             binding.userEditName.hint = userItem!!.userName

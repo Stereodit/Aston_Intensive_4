@@ -9,12 +9,10 @@ import androidx.fragment.app.Fragment
 import com.example.fragments.R
 import com.example.fragments.databinding.FragmentBBinding
 
-class FragmentB : Fragment(R.layout.fragment_b) {
+const val BUNDLE_REQUEST_KEY = "FROM_B_TO_C"
+const val BUNDLE_MESSAGE_KEY = "MESSAGE"
 
-    companion object {
-        const val requestKey = "fromBtoC"
-        const val messageKey = "text"
-    }
+class FragmentB : Fragment(R.layout.fragment_b) {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,10 +22,10 @@ class FragmentB : Fragment(R.layout.fragment_b) {
         val binding = FragmentBBinding.inflate(layoutInflater)
 
         binding.fragmentBNextButton.setOnClickListener {
-            val textToFragmentC = "Hello, fragment C!"
+            val message = "Hello, fragment C!"
             parentFragmentManager.setFragmentResult(
-                requestKey,
-                bundleOf(messageKey to textToFragmentC)
+                BUNDLE_REQUEST_KEY,
+                bundleOf(BUNDLE_MESSAGE_KEY to message)
             )
 
             parentFragmentManager.beginTransaction().apply {

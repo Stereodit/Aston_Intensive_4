@@ -14,18 +14,13 @@ import com.example.fragments.R
 import com.example.fragments.databinding.FragmentUserListBinding
 import com.example.fragments.second_part.recycler.UserAdapter
 import com.example.fragments.second_part.recycler.UserItem
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+
+const val BUNDLE_FROM_LIST_REQUEST_KEY = "FROM_LIST"
+const val BUNDLE_USER_ITEM_KEY = "USER_ITEM"
 
 class UserListFragment : Fragment(R.layout.fragment_user_list) {
 
     private var adapter: UserAdapter? = null
-
-    companion object {
-        const val fromListRequestKey = "userItemFromList"
-        const val toListRequestKey = "userItemToList"
-        const val bundleKey = "userItemBundle"
-    }
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
@@ -53,8 +48,8 @@ class UserListFragment : Fragment(R.layout.fragment_user_list) {
 
         recycler.adapter = adapter
 
-        parentFragmentManager.setFragmentResultListener(toListRequestKey, this) { _, bundle ->
-            val newUserItem: UserItem? = bundle.getString(bundleKey)?.let { Json.decodeFromString(it) }
+        parentFragmentManager.setFragmentResultListener(BUNDLE_TO_LIST_REQUEST_KEY, this) { _, bundle ->
+            val newUserItem: UserItem? = bundle.serializable(BUNDLE_USER_ITEM_KEY) as UserItem?
             if (newUserItem != null) {
                 adapter!!.submitList(adapter!!.currentList.toMutableList().also {
                     it.removeAt(newUserItem.userId)
@@ -69,8 +64,8 @@ class UserListFragment : Fragment(R.layout.fragment_user_list) {
 
     private fun onItemClick(item: UserItem) {
         parentFragmentManager.setFragmentResult(
-            fromListRequestKey,
-            bundleOf(bundleKey to Json.encodeToString(item))
+            BUNDLE_FROM_LIST_REQUEST_KEY,
+            bundleOf(BUNDLE_USER_ITEM_KEY to item)
         )
         parentFragmentManager.beginTransaction().apply {
             setReorderingAllowed(true)
