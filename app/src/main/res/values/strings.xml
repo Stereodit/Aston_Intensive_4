@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">Fragments</string>
+
+    <string name="fragment_a_title">fragment A</string>
+    <string name="fragment_a_next_button">Jump to B</string>
+
+    <string name="fragment_b_title">fragment B</string>
+    <string name="fragment_b_next_button">Jump to C</string>
+    <string name="fragment_b_prev_button">Back to A</string>
+
+    <string name="fragment_c_title">fragment C</string>
+    <string name="fragment_c_next_button">Jump to D</string>
+    <string name="fragment_c_prev_button">Back to A</string>
+    <string name="fragment_c_incoming_text">Incoming text…</string>
+
+    <string name="fragment_d_title">fragment D</string>
+    <string name="fragment_d_prev_button">Back to B</string>
+
+    <string name="fork_screen_first_part">Part 1</string>
+    <string name="fork_screen_second_part">Part 2</string>
+
+    <string name="user_surname_holder">Ivanov</string>
+    <string name="user_name_holder">Ivan</string>
+    <string name="user_phone_holder">+79113356722</string>
+    <string name="user_edit_apply_button">APPLY</string>
+    <string name="user_edit_button_cancel">Cancel</string>
+    <string name="edit_user_title">Edit user</string>
+
 </resources>
